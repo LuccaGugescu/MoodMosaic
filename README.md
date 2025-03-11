@@ -7,6 +7,9 @@ MoodMosaic is a unique app that blends mental health tracking with creative expr
 
 ---
 
+![image](https://github.com/user-attachments/assets/4ae3b7b2-ce98-499c-97e0-ce5529f45a2f)
+
+
 ## Features  
 - [ ] **Daily Mood Logging**: Easily log your mood each day with a simple and intuitive interface.  
 - [ ] **Emotion-Based Art Generation**: The app creates unique digital art (e.g., mosaics, paintings, animations) based on your mood data.  
