@@ -35,12 +35,12 @@ MoodMosaic/
 ├── assets/               # Contains images, icons, fonts, and other static files
 ├── app/                  # Main app directory (Expo Router structure)
 │   ├── (tabs)/           # Tab-based navigation (optional, if using tabs)
-│   │   ├── index.js      # Main tab navigator
-│   │   ├── mood.js       # Mood logging screen
-│   │   └── gallery.js    # Art gallery screen
-│   ├── _layout.js        # Root layout for the app (shared styles, navigation container)
-│   ├── index.js          # Entry point for the app (home screen or initial route)
-│   └── [user].js         # Dynamic route example (e.g., user profile)
+│   │   ├── index.tsx      # Main tab navigator
+│   │   ├── mood.tsx       # Mood logging screen
+│   │   └── gallery.tsx    # Art gallery screen
+│   ├── _layout.tsx        # Root layout for the app (shared styles, navigation container)
+│   ├── index.tsx         # Entry point for the app (home screen or initial route)
+│   └── [user].tsx         # Dynamic route example (e.g., user profile)
 ├── src/                  # Source code for the app
 │   ├── components/       # Reusable UI components (e.g., buttons, cards)
 │   ├── constants/        # Constants (e.g., colors, API endpoints)
