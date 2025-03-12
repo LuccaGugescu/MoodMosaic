@@ -1,75 +1,54 @@
 import React from 'react';
-import { Image, StyleSheet, Platform } from 'react-native';
-
-import { HelloWave } from '@/components/HelloWave';
-import ParallaxScrollView from '@/components/ParallaxScrollView';
-import { ThemedText } from '@/components/ThemedText';
-import { ThemedView } from '@/components/ThemedView';
+import { useEffect, useState } from 'react';
+import { View, Text, FlatList, Pressable, ScrollView } from 'react-native';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { Link } from 'expo-router';
+import { Mood } from '@/types';
+import MoodArt from '@/components/MoodArt';
 
 export default function HomeScreen() {
+  const [moods, setMoods] = useState<Mood[]>([]);
+
+  const loadMoods = async () => {
+    const storedMoods = await AsyncStorage.getItem('moods');
+    if (storedMoods) {
+      setMoods(JSON.parse(storedMoods));
+    }
+  };
+
+  useEffect(() => {
+    loadMoods();
+  }, []);
+
   return (
-    <ParallaxScrollView
-      headerBackgroundColor={{ light: '#A1CEDC', dark: '#1D3D47' }}
-      headerImage={
-        <Image
-          source={require('@/assets/images/partial-react-logo.png')}
-          style={styles.reactLogo}
-        />
-      }>
-      <ThemedView style={styles.titleContainer}>
-        <ThemedText type="title">Welcome!</ThemedText>
-        <HelloWave />
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 1: Try it</ThemedText>
-        <ThemedText>
-          Edit <ThemedText type="defaultSemiBold">app/(tabs)/index.tsx</ThemedText> to see changes.
-          Press{' '}
-          <ThemedText type="defaultSemiBold">
-            {Platform.select({
-              ios: 'cmd + d',
-              android: 'cmd + m',
-              web: 'F12'
-            })}
-          </ThemedText>{' '}
-          to open developer tools.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 2: Explore</ThemedText>
-        <ThemedText>
-          Tap the Explore tab to learn more about what's included in this starter app.
-        </ThemedText>
-      </ThemedView>
-      <ThemedView style={styles.stepContainer}>
-        <ThemedText type="subtitle">Step 3: Get a fresh start</ThemedText>
-        <ThemedText>
-          When you're ready, run{' '}
-          <ThemedText type="defaultSemiBold">npm run reset-project</ThemedText> to get a fresh{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> directory. This will move the current{' '}
-          <ThemedText type="defaultSemiBold">app</ThemedText> to{' '}
-          <ThemedText type="defaultSemiBold">app-example</ThemedText>.
-        </ThemedText>
-      </ThemedView>
-    </ParallaxScrollView>
+    <ScrollView className="flex-1 p-4 bg-gray-100">
+      <Text className="text-2xl font-bold mb-4">MoodMosaic</Text>
+      <Link href="/mood-log" asChild>
+        <Pressable className="bg-blue-500 p-3 rounded-lg mb-4">
+          <Text className="text-white text-center">Log Your Mood</Text>
+        </Pressable>
+      </Link>
+      <Text className="text-xl font-semibold mb-2">Your Mood Mosaic</Text>
+      <View className="flex-row flex-wrap mb-4">
+        {moods.map((mood, index) => (
+          <MoodArt key={index} mood={mood.mood} />
+        ))}
+      </View>
+      <Text className="text-xl font-semibold mb-2">Mood Log</Text>
+      <FlatList
+        data={moods}
+        keyExtractor={(item) => item.date}
+        renderItem={({ item }) => (
+          <View className="flex-row items-center mb-2">
+            <MoodArt mood={item.mood} />
+            <View className="ml-4">
+              <Text className="text-lg">{item.mood}</Text>
+              <Text className="text-sm text-gray-500">{item.note}</Text>
+              <Text className="text-xs text-gray-400">{new Date(item.date).toLocaleString()}</Text>
+            </View>
+          </View>
+        )}
+      />
+    </ScrollView>
   );
 }
-
-const styles = StyleSheet.create({
-  titleContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    gap: 8,
-  },
-  stepContainer: {
-    gap: 8,
-    marginBottom: 8,
-  },
-  reactLogo: {
-    height: 178,
-    width: 290,
-    bottom: 0,
-    left: 0,
-    position: 'absolute',
-  },
-});
